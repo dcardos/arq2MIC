@@ -58,6 +58,7 @@ int main()
     /*write ASCII header to the file*/
     //-->fprintf(fp,"P6\n %d\n %d\n %d\n",iXmax,iYmax,MaxColorComponentValue);
     /* compute and write image data bytes to the file*/
+    #pragma offload target(mic) out(colorR:length(iXmax * iYmax)) out(colorG:length(iXmax * iYmax)) out(colorB:length(iXmax * iYmax))
     for(iY=0;iY<iYmax;iY++)
     {
         Cy=CyMin + iY*PixelHeight;
@@ -81,22 +82,25 @@ int main()
             /* compute  pixel color (24 bit = 3 bytes) */
             if (Iteration==IterationMax)
             { /*  interior of Mandelbrot set = black */
-               color[0]=0;
-               color[1]=0;
-               color[2]=0;                           
+               colorR[inc]=0;
+               colorG[inc]=0;
+               colorB[inc]=0;                           
             }
             else 
             { /* exterior of Mandelbrot set = white */
-                 color[0]=((IterationMax-Iteration) % 8) *  63;  /* Red */
-                 color[1]=((IterationMax-Iteration) % 4) * 127;  /* Green */ 
-                 color[2]=((IterationMax-Iteration) % 2) * 255;  /* Blue */
+                 // color[0]=((IterationMax-Iteration) % 8) *  63;  /* Red */
+                 // color[1]=((IterationMax-Iteration) % 4) * 127;  /* Green */ 
+                 // color[2]=((IterationMax-Iteration) % 2) * 255;  /* Blue */
+                colorR[inc] = ((IterationMax-Iteration) % 8) *  63;  /* Red */
+                colorG[inc] = ((IterationMax-Iteration) % 4) * 127;  /* Green */
+                colorB[inc] = ((IterationMax-Iteration) % 2) * 255;  /* Blue */
             };
             /*write color to the file*/
             //-->fwrite(color,1,3,fp);
             /* escrever nas minhas variáveis na memória */
-            colorR[inc] = color[0];
-            colorG[inc] = color[1];
-            colorB[inc] = color[2];
+            // colorR[inc] = color[0];
+            // colorG[inc] = color[1];
+            // colorB[inc] = color[2];
             inc++;
         }
 
