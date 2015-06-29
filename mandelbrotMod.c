@@ -1,42 +1,110 @@
 /* 
-Modified from: http://rosettacode.org/wiki/Mandelbrot_set#PPM_non_interactive
-
-c program:
---------------------------------
-1. draws Mandelbrot set for Fc(z)=z*z +c
-using Mandelbrot algorithm ( boolean escape time )
--------------------------------         
-2. technique of creating ppm file is  based on the code of Claudio Rocchini
-http://en.wikipedia.org/wiki/Image:Color_complex_plot.jpg
-create 24 bit color graphic file ,  portable pixmap file = PPM 
-see http://en.wikipedia.org/wiki/Portable_pixmap
-to see the file use external application ( graphic viewer)
-*/
+ * Modified from: http://rosettacode.org/wiki/Mandelbrot_set#PPM_non_interactive
+ *
+ * c program:
+ * --------------------------------
+ *  1. draws Mandelbrot set for Fc(z)=z*z +c
+ *  using Mandelbrot algorithm ( boolean escape time )
+ *  -------------------------------         
+ *  2. technique of creating ppm file is  based on the code of Claudio Rocchini
+ *  http://en.wikipedia.org/wiki/Image:Color_complex_plot.jpg
+ *  create 24 bit color graphic file ,  portable pixmap file = PPM 
+ *  see http://en.wikipedia.org/wiki/Portable_pixmap
+ *  to see the file use external application ( graphic viewer)
+ *  */
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 
+__declspec(target(mic))
+static const double CxMin=-2.5;
+__declspec(target(mic))
+static const double CxMax=1.5;
+__declspec(target(mic))
+static const double CyMin=-2.0;
+__declspec(target(mic))
+static const double CyMax=2.0;
+__declspec(target(mic))
+static const int iYmax = 16384;
+__declspec(target(mic))
+static const int IterationMax=256;
+__declspec(target(mic))
+static const double EscapeRadius=2;
+__declspec(target(mic))
+static const int iXmax = 16384;
+__declspec(target(mic))
+static const int MaxColorComponentValue=255; 
+
+void innerLoop(int Cy_arg, double PixelWidth_arg, int pos, unsigned char *vetorR, unsigned char *vetorG, unsigned char *vetorB)
+{
+    /* bail-out value , radius of circle ;  */
+    
+    double ER2=EscapeRadius*EscapeRadius;
+
+    int Iteration;
+    double Zx, Zy;
+    double Zx2, Zy2;
+    int iX_arg;
+    for(iX_arg=0;iX_arg<iXmax;iX_arg++)
+    {         
+        double Cx_arg=CxMin + iX_arg*PixelWidth_arg;
+        /* initial value of orbit = critical point Z= 0 */
+        Zx=0.0;
+        Zy=0.0;
+        Zx2=Zx*Zx;
+        Zy2=Zy*Zy;
+        /* */
+        for (Iteration=0;Iteration<IterationMax && ((Zx2+Zy2)<ER2);Iteration++)
+        {
+            Zy=2*Zx*Zy + Cy_arg;
+            Zx=Zx2-Zy2 + Cx_arg;
+            Zx2=Zx*Zx;
+            Zy2=Zy*Zy;
+        };
+        /* compute  pixel color (24 bit = 3 bytes) */
+        if (Iteration==IterationMax)
+        { /*  interior of Mandelbrot set = black */
+           vetorR[pos]=0;
+           vetorG[pos]=0;
+           vetorB[pos]=0;                           
+        }
+        else 
+        { /* exterior of Mandelbrot set = white */
+            vetorR[pos] = ((IterationMax-Iteration) % 8) *  63;  /* Red */
+            vetorG[pos] = ((IterationMax-Iteration) % 4) * 127;  /* Green */
+            vetorB[pos] = ((IterationMax-Iteration) % 2) * 255;  /* Blue */
+        };
+        pos++;
+    }
+}
+
+void persistent(unsigned char *vetorR, unsigned char *vetorG, unsigned char *vetorB)
+{
+    FILE * fp;
+    char *filename="mandelbrot.ppm";
+    fp= fopen(filename,"wb");
+    fprintf(fp,"P6\n %d\n %d\n %d\n",iXmax,iYmax,MaxColorComponentValue);
+    int i=0;
+    for (i; i<iYmax*iXmax; i++)
+    {
+        fwrite(vetorR,1,1,fp);
+        vetorR++;
+        fwrite(vetorG,1,1,fp);
+        vetorG++;
+        fwrite(vetorB,1,1,fp);
+        vetorB++;
+    }
+    fclose(fp);
+}
+
 int main()
 {
-    /* screen ( integer) coordinate */
-    int iX,iY;
-    const int iXmax = 16384; 
-    const int iYmax = 16384;
-    /* world ( double) coordinate = parameter plane*/
-    double Cx,Cy;
-    const double CxMin=-2.5;
-    const double CxMax=1.5;
-    const double CyMin=-2.0;
-    const double CyMax=2.0;
-    /* */
+    int iY;
+     
+    double Cy;
+    
     double PixelWidth=(CxMax-CxMin)/iXmax;
     double PixelHeight=(CyMax-CyMin)/iYmax;
-    /* color component ( R or G or B) is coded from 0 to 255 */
-    /* it is 24 bit color RGB file */
-    const int MaxColorComponentValue=255; 
-    //--->FILE * fp;
-    //--->char *filename="mandelbrot.ppm";
-    static unsigned char color[3];
 
     /* Minhas variáveis em memória */
 	unsigned char *colorR = (unsigned char *)malloc(iXmax * iYmax * sizeof(char));
@@ -44,68 +112,19 @@ int main()
     unsigned char *colorB = (unsigned char *)malloc(iXmax * iYmax * sizeof(char));
 	int inc = 0;
 
-    /* Z=Zx+Zy*i  ;   Z0 = 0 */
-    double Zx, Zy;
-    double Zx2, Zy2; /* Zx2=Zx*Zx;  Zy2=Zy*Zy  */
-    /*  */
-    int Iteration;
-    const int IterationMax=256;
-    /* bail-out value , radius of circle ;  */
-    const double EscapeRadius=2;
-    double ER2=EscapeRadius*EscapeRadius;
-    /*create new file,give it a name and open it in binary mode  */
-    //-->fp= fopen(filename,"wb"); /* b -  binary mode */
-    /*write ASCII header to the file*/
-    //-->fprintf(fp,"P6\n %d\n %d\n %d\n",iXmax,iYmax,MaxColorComponentValue);
-    /* compute and write image data bytes to the file*/
-    #pragma offload target(mic) out(colorR:length(iXmax * iYmax)) out(colorG:length(iXmax * iYmax)) out(colorB:length(iXmax * iYmax))
+    void __attribute__((target(mic))) innerLoop(int Cy_arg, double PixelWidth_arg, int pos, unsigned char *v1, unsigned char *v2, unsigned char *v3);
+    #pragma offload target(mic) out(colorR:length(iXmax * iYmax)) inout(colorG:length(iXmax * iYmax)) inout(colorB:length(iXmax * iYmax))
     for(iY=0;iY<iYmax;iY++)
     {
         Cy=CyMin + iY*PixelHeight;
         if (fabs(Cy)< PixelHeight/2) Cy=0.0; /* Main antenna */
-        for(iX=0;iX<iXmax;iX++)
-        {         
-            Cx=CxMin + iX*PixelWidth;
-            /* initial value of orbit = critical point Z= 0 */
-            Zx=0.0;
-            Zy=0.0;
-            Zx2=Zx*Zx;
-            Zy2=Zy*Zy;
-            /* */
-            for (Iteration=0;Iteration<IterationMax && ((Zx2+Zy2)<ER2);Iteration++)
-            {
-                Zy=2*Zx*Zy + Cy;
-                Zx=Zx2-Zy2 + Cx;
-                Zx2=Zx*Zx;
-                Zy2=Zy*Zy;
-            };
-            /* compute  pixel color (24 bit = 3 bytes) */
-            if (Iteration==IterationMax)
-            { /*  interior of Mandelbrot set = black */
-               colorR[inc]=0;
-               colorG[inc]=0;
-               colorB[inc]=0;                           
-            }
-            else 
-            { /* exterior of Mandelbrot set = white */
-                 // color[0]=((IterationMax-Iteration) % 8) *  63;  /* Red */
-                 // color[1]=((IterationMax-Iteration) % 4) * 127;  /* Green */ 
-                 // color[2]=((IterationMax-Iteration) % 2) * 255;  /* Blue */
-                colorR[inc] = ((IterationMax-Iteration) % 8) *  63;  /* Red */
-                colorG[inc] = ((IterationMax-Iteration) % 4) * 127;  /* Green */
-                colorB[inc] = ((IterationMax-Iteration) % 2) * 255;  /* Blue */
-            };
-            /*write color to the file*/
-            //-->fwrite(color,1,3,fp);
-            /* escrever nas minhas variáveis na memória */
-            // colorR[inc] = color[0];
-            // colorG[inc] = color[1];
-            // colorB[inc] = color[2];
-            inc++;
-        }
+        
+        innerLoop(Cy, PixelWidth, inc, colorR, colorG, colorB);
 
+        inc += iXmax;
     }
-    //printf("Suposicao: %d\n Real: %d", iXmax*iYmax, inc); 
-    //-->fclose(fp);
+
+    //persistent(colorR, colorG, colorB);
+    
     return 0;
 }
