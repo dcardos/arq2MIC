@@ -114,6 +114,6 @@ int main()
         }
 
         /* write to the file */
-        //persistent(vetorR, vetorG, vetorB);
+        persistent(vetorR, vetorG, vetorB);
         return 0;
 }
