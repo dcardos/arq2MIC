@@ -115,8 +115,7 @@ int main()
         int inc = 0;
 
         void __attribute__((target(mic))) innerLoop(unsigned char *red, unsigned char *green, unsigned char *blue);
-        #pragma offload target(mic) in(vetorR:length(iXmax * iYmax)) in(vetorG:length(iXmax * iYmax)) in(vetorB:length(iXmax * iYmax)) \
-                                    out(vetorR:length(iXmax * iYmax)) out(vetorG:length(iXmax * iYmax)) out(vetorB:length(iXmax * iYmax))
+        #pragma offload target(mic) out(vetorR:length(iXmax * iYmax)) out(vetorG:length(iXmax * iYmax)) out(vetorB:length(iXmax * iYmax))
         for(iY=0;iY<iYmax;iY++)
         {
              Cy=CyMin + iY*PixelHeight;
