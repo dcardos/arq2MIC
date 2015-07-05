@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
         sobra = qtdY + sobra;
     // printf("Chunks: %d  sobra: %d\n", qtdY, sobra);
 
-    void __attribute__((target(mic))) void *innerLoop(void *threadArg);
+    void __attribute__((target(mic))) *innerLoop(void *threadArg);
     #pragma offload target(mic) out(vetorR:length(iXmax * iYmax)) out(vetorG:length(iXmax * iYmax)) out(vetorB:length(iXmax * iYmax))
     //#pragma omp parallel for
     for (t=0; t<(nThreads-1); t++){
