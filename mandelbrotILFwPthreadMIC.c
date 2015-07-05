@@ -20,32 +20,32 @@ to see the file use external application ( graphic viewer)
 // #define nThreads     256
 
 /* constantes */
-// __declspec(target(mic))
+__declspec(target(mic))
 static const double CxMin=-2.5;
-// __declspec(target(mic))
+__declspec(target(mic))
 static const double CxMax=1.5;
-// __declspec(target(mic))
+__declspec(target(mic))
 static const double CyMin=-2.0;
-// __declspec(target(mic))
+__declspec(target(mic))
 static const double CyMax=2.0;
-// __declspec(target(mic))
+__declspec(target(mic))
 static const int iYmax = 16384;
-// __declspec(target(mic))
+__declspec(target(mic))
 static const int IterationMax=256;
-// __declspec(target(mic))
+__declspec(target(mic))
 static const double EscapeRadius=2;
-// __declspec(target(mic))
+__declspec(target(mic))
 static const int iXmax = 16384;
-// __declspec(target(mic))
+__declspec(target(mic))
 static const int MaxColorComponentValue=255;
 /* variáveis globais */
-// __declspec(target(mic))
+__declspec(target(mic))
 double ER2;
-// __declspec(target(mic))
+__declspec(target(mic))
 double PixelWidth;
-// __declspec(target(mic))
+__declspec(target(mic))
 double PixelHeight;
-// __declspec(target(mic))
+__declspec(target(mic))
 typedef struct args_str{
     unsigned char *vectorR;
     unsigned char *vectorG;
@@ -181,8 +181,8 @@ int main(int argc, char *argv[])
         sobra = qtdY + sobra;
     // printf("Chunks: %d  sobra: %d\n", qtdY, sobra);
 
-    //void __attribute__((target(mic))) innerLoop(unsigned char *red, unsigned char *green, unsigned char *blue);
-    //#pragma offload target(mic) out(vetorR:length(iXmax * iYmax)) out(vetorG:length(iXmax * iYmax)) out(vetorB:length(iXmax * iYmax))
+    void __attribute__((target(mic))) void *innerLoop(void *threadArg);
+    #pragma offload target(mic) out(vetorR:length(iXmax * iYmax)) out(vetorG:length(iXmax * iYmax)) out(vetorB:length(iXmax * iYmax))
     //#pragma omp parallel for
     for (t=0; t<(nThreads-1); t++){
         /* setando argumentos */

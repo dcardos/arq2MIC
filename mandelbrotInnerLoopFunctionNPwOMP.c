@@ -26,12 +26,14 @@ static const double EscapeRadius=2;
 static const int iXmax = 16384;
 static const int MaxColorComponentValue=255;
 /* variáveis globais */
-int iX, iY;
-double Cx, Cy;
-double Zx, Zy;
-double Zx2, Zy2; /* Zx2=Zx*Zx;  Zy2=Zy*Zy  */
-
-
+// __declspec(target(mic))
+double ER2;
+// __declspec(target(mic))
+double PixelWidth;
+// __declspec(target(mic))
+double PixelHeight;
+// __declspec(target(mic))
+//double Cy;
 
 void persistent(unsigned char *vetorR, unsigned char *vetorG, unsigned char *vetorB)
 {
@@ -52,11 +54,14 @@ void persistent(unsigned char *vetorR, unsigned char *vetorG, unsigned char *vet
     fclose(fp);
 }
 
-void innerLoop(unsigned char *red, unsigned char *green, unsigned char *blue){
+void innerLoop(unsigned char *red, unsigned char *green, unsigned char *blue, double CyArg){
+    int iX;
+    double Cx;
+    double Zx, Zy;
+    double Zx2, Zy2; /* Zx2=Zx*Zx;  Zy2=Zy*Zy  */
     int Iteration;
-    double ER2=EscapeRadius*EscapeRadius;
-    double PixelWidth=(CxMax-CxMin)/iXmax;
-    int pos = 0;
+    
+    long pos = 0;
     for(iX=0;iX<iXmax;iX++)
     {         
         Cx=CxMin + iX*PixelWidth;
@@ -68,7 +73,7 @@ void innerLoop(unsigned char *red, unsigned char *green, unsigned char *blue){
         /* */
         for (Iteration=0;Iteration<IterationMax && ((Zx2+Zy2)<ER2);Iteration++)
         {
-            Zy=2*Zx*Zy + Cy;
+            Zy=2*Zx*Zy + CyArg;
             Zx=Zx2-Zy2 + Cx;
             Zx2=Zx*Zx;
             Zy2=Zy*Zy;
@@ -93,27 +98,35 @@ void innerLoop(unsigned char *red, unsigned char *green, unsigned char *blue){
 int main()
 {
 
-        double PixelHeight=(CyMax-CyMin)/iYmax;
+    PixelHeight=(CyMax-CyMin)/iYmax;
+    ER2=EscapeRadius*EscapeRadius;
+    PixelWidth=(CxMax-CxMin)/iXmax;
 
-        /* Minhas variáveis em memória */
-        unsigned char *vetorR = (unsigned char *)malloc(iXmax * iYmax * sizeof(char));
-        unsigned char *vetorG = (unsigned char *)malloc(iXmax * iYmax * sizeof(char));
-        unsigned char *vetorB = (unsigned char *)malloc(iXmax * iYmax * sizeof(char));
-        int inc = 0;
+    /* Minhas variáveis em memória */
+    unsigned char *vetorR = (unsigned char *)malloc(iXmax * iYmax * sizeof(char));
+    unsigned char *vetorG = (unsigned char *)malloc(iXmax * iYmax * sizeof(char));
+    unsigned char *vetorB = (unsigned char *)malloc(iXmax * iYmax * sizeof(char));
+    int iY, inc = 0;
+    double Cy;
 
-        #pragma omp parallel for
-        for(iY=0;iY<iYmax;iY++)
-        {
-             Cy=CyMin + iY*PixelHeight;
-             if (fabs(Cy)< PixelHeight/2) Cy=0.0; /* Main antenna */
+    #pragma omp parallel for
+    for(iY=0;iY<iYmax;iY++)
+    {
+         Cy=CyMin + iY*PixelHeight;
+         if (fabs(Cy)< PixelHeight/2) Cy=0.0; /* Main antenna */
 
-             innerLoop(&vetorR[inc], &vetorG[inc], &vetorB[inc]);
+         innerLoop(&vetorR[inc], &vetorG[inc], &vetorB[inc], Cy);
 
-             inc += iXmax;
-             
-        }
+         inc += iXmax;
+         
+    }
 
-        /* write to the file */
-        //persistent(vetorR, vetorG, vetorB);
-        return 0;
+    /* write to the file */
+    //persistent(vetorR, vetorG, vetorB);
+
+    free(vetorR);
+    free(vetorG);
+    free(vetorB);
+
+    return 0;
 }

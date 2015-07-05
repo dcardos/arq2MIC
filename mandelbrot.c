@@ -34,7 +34,7 @@ int main()
         /* it is 24 bit color RGB file */
         const int MaxColorComponentValue=255; 
         FILE * fp;
-        char *filename="mandelbrot.ppm";
+        char *filename="original.ppm";
         static unsigned char color[3];
         /* Z=Zx+Zy*i  ;   Z0 = 0 */
         double Zx, Zy;
