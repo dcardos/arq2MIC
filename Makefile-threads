@@ -3,7 +3,6 @@ CFLAGS=-pthread
 .PHONY: run
 run: prog
 	$(info Executando versão paralela (sem persistência) com diferentes número de threads)
-	time -p ./mandelbrotILFwPthreadNP.out 2
 	time -p ./mandelbrotILFwPthreadNP.out 4
 	time -p ./mandelbrotILFwPthreadNP.out 8
 	time -p ./mandelbrotILFwPthreadNP.out 16
