@@ -36,7 +36,7 @@ double Zx2, Zy2; /* Zx2=Zx*Zx;  Zy2=Zy*Zy  */
 void persistent(unsigned char *vetorR, unsigned char *vetorG, unsigned char *vetorB)
 {
     FILE * fp;
-    char *filename="mandelbrot.ppm";
+    char *filename="funcao.ppm";
     fp= fopen(filename,"wb");
     fprintf(fp,"P6\n %d\n %d\n %d\n",iXmax,iYmax,MaxColorComponentValue);
     int i=0;

@@ -1,0 +1,15 @@
+CC=icc
+CFLAGS=-pthread
+NTHREADS=256
+.PHONY: run
+run: prog
+	$(info Executando versões persistentes)
+	time -p ./mandelbrot.out
+	time -p ./mandelbrotInnerLoopFunctionP.out
+	time -p ./mandelbrotILFwPthreadP.out $(NTHREADS)
+
+prog:
+	$(info Compilando versões persistentes)
+	$(CC) mandelbrot.c -o mandelbrot.out
+	$(CC) mandelbrotInnerLoopFunctionP.c -o mandelbrotInnerLoopFunctionP.out
+	$(CC) mandelbrotILFwPthread.c -o mandelbrotILFwPthreadP.out $(CFLAGS)

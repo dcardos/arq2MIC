@@ -58,7 +58,7 @@ typedef struct args_str{
 void persistent(unsigned char *vetorR, unsigned char *vetorG, unsigned char *vetorB)
 {
     FILE * fp;
-    char *filename="mandelbrot.ppm";
+    char *filename="threaded.ppm";
     fp= fopen(filename,"wb");
     fprintf(fp,"P6\n %d\n %d\n %d\n",iXmax,iYmax,MaxColorComponentValue);
     int i=0;

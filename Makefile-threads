@@ -1,0 +1,20 @@
+CC=icc
+CFLAGS=-pthread
+.PHONY: run
+run: prog
+	$(info Executando versão paralela (sem persistência) com diferentes número de threads)
+	time -p ./mandelbrotILFwPthreadNP.out 2
+	time -p ./mandelbrotILFwPthreadNP.out 4
+	time -p ./mandelbrotILFwPthreadNP.out 8
+	time -p ./mandelbrotILFwPthreadNP.out 16
+	time -p ./mandelbrotILFwPthreadNP.out 32
+	time -p ./mandelbrotILFwPthreadNP.out 64
+	time -p ./mandelbrotILFwPthreadNP.out 128
+	time -p ./mandelbrotILFwPthreadNP.out 256
+	time -p ./mandelbrotILFwPthreadNP.out 512
+	time -p ./mandelbrotILFwPthreadNP.out 1024
+	time -p ./mandelbrotILFwPthreadNP.out 2048
+	time -p ./mandelbrotILFwPthreadNP.out 4096
+
+prog:
+	$(CC) mandelbrotILFwPthreadNP.c -o mandelbrotILFwPthreadNP.out $(CFLAGS)
