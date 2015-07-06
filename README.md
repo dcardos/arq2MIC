@@ -10,6 +10,8 @@ Trabalho final da matéria arquitetura de computadores 2 utilizando o algoritmo 
 Todas as versões citadas anteriormente possuem implementação tanto com persistência, gerando a imagem, quanto sem. A sigla 'NP' no nome dos arquivos significa não persistente.
 
 # Instruções para execução dos arquivos
+Em uma máquina linux com compilador da Intel instalado execute o Makefile especificado abaixo utilizando  
+*$make -f MakeFileEscolhido*
 - Makefile-P irá compilar e executar as verões persistentes mostrando seu tempo de execução. **Atenção** para o fato de que **serão geradas 3 imagens de aproximadamente 800MB cada**, elas devem ser iguais em conteúdo, mas seus nomes são dados de acordo com o algoritmo utilizado.
 - Makefile-NP irá compilar e executar as versões não persistentes mostrando seu tempo de execução.
 - Makefile-threads irá compilar e executar 11 modos do algoritmo paralelo usando threads, começando por 2 até 4096 threads. Tempo de execução também será computado.
@@ -18,6 +20,8 @@ Todas as versões citadas anteriormente possuem implementação tanto com persis
 Utilizando o compilador da Intel em um notebook ASUS com Intel i7 4700hq [(especificações)](http://ark.intel.com/products/75116/Intel-Core-i7-4700HQ-Processor-6M-Cache-up-to-3_40-GHz), 8GB DDR3L 1600 MHz SDRAM e SSD 500GB foram obtidos os resultados apresentados no gráfico
 
 ![Notebook Asus N550J com SSD](https://github.com/dcardos/arq2MIC/blob/master/Graficos/PvsNP.jpg)
+
+![Notebook Asus N550J com SSD threads](https://github.com/dcardos/arq2MIC/blob/master/Graficos/threads.jpg)
 
 # Conclusão
 A versão funcional -Inner Loop Function- teve um leve ganho de desempenho provavelmente por uma possibilidade de vetorização ou melhor utilização da memória cache. Todavia criar uma função de persistência aumentou o número de acesso vetorial não aproveitando o loop original, além de aumentar significamente o tempo de persistência dos dados.
