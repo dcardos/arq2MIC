@@ -64,12 +64,9 @@ void persistent(unsigned char *vetorR, unsigned char *vetorG, unsigned char *vet
     int i=0;
     for (i; i<iYmax*iXmax; i++)
     {
-        fwrite(vetorR,1,1,fp);
-        vetorR++;
-        fwrite(vetorG,1,1,fp);
-        vetorG++;
-        fwrite(vetorB,1,1,fp);
-        vetorB++;
+        fwrite(&vetorR[i],1,1,fp);
+        fwrite(&vetorG[i],1,1,fp);
+        fwrite(&vetorB[i],1,1,fp);
     }
     fclose(fp);
 }
