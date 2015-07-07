@@ -24,7 +24,7 @@ Utilizando o compilador da Intel em um notebook ASUS com Intel i7 4700hq [(espec
 
 ![Notebook Asus N550J com SSD](https://github.com/dcardos/arq2MIC/blob/master/Graficos/PvsNP.jpg)
 
-![Notebook Asus N550J com SSD threads](https://github.com/dcardos/arq2MIC/blob/master/Graficos/threads.jpg)
+
 
 A execução do mesmo algoritmo utilizando o Xeon Phi compilação nativa na placa resultou nos dados apresentados no gráfico abaixo
 
