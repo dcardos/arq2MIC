@@ -23,7 +23,7 @@ Há também um script que pode ser executado localizado na placa *mic0*
 # Resultados
 Utilizando o compilador da Intel em um notebook ASUS com Intel i7 4700hq [(especificações)](http://ark.intel.com/products/75116/Intel-Core-i7-4700HQ-Processor-6M-Cache-up-to-3_40-GHz), 8GB DDR3L 1600 MHz SDRAM e SSD 500GB foram obtidos os resultados apresentados no gráfico
 
-![Notebook Asus N550J com SSD](https://github.com/dcardos/arq2MIC/blob/master/Graficos/PvsNP.jpg)
+![Notebook Asus N550J com SSD](https://github.com/dcardos/arq2MIC/blob/master/Graficos/PvsNP2.jpg)
 
 Or próximos dois gráficos apresentam uma análise do algoritmo paralelo usando POSIX threads **sem persistência**
 
