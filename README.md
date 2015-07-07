@@ -24,13 +24,15 @@ Utilizando o compilador da Intel em um notebook ASUS com Intel i7 4700hq [(espec
 
 ![Notebook Asus N550J com SSD](https://github.com/dcardos/arq2MIC/blob/master/Graficos/PvsNP.jpg)
 
+Or próximos dois gráficos apresentam uma análise do algoritmo paralelo usando POSIX threads **sem persistência**
+
 ![Notebook Asus N550J com SSD threads](https://github.com/dcardos/arq2MIC/blob/master/Graficos/threads2.jpg)
 
 A execução do mesmo algoritmo utilizando o Xeon Phi compilação nativa na placa resultou nos dados apresentados no gráfico abaixo
 
 ![MIC threads](https://github.com/dcardos/arq2MIC/blob/master/Graficos/threads-MIC.jpg)
 
-Utilizando persistência com 1024 threads, o tempo de execução na placa passa a ser **2m36s**.
+**Utilizando persistência** com 1024 threads, o tempo de execução na placa passa a ser **2m36s**.
 
 Todos os tempos apresentados são a média de 3 execuções.
 
