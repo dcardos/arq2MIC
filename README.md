@@ -5,7 +5,7 @@ Trabalho final da matéria arquitetura de computadores 2 utilizando o algoritmo 
 - mandelbrot.c - arquivo orignal.  
 - mandelbrotInnerLoopFuncrion.c - algoritmo implementado funcionalmente, os dois loops aninhados viraram uma função, bem  como a parte referente a persistência.  
 - mandelbrotILFwPthread.c - algoritmo implementado através de POSIX Threads.  
-- mandelbrotInnerLoopFunctionwOffload.c - algoritmo implementado com offload para placa MIC  
+- mandelbrotInnerLoopFunctionwOffload.c - algoritmo implementado com offload para placa MIC
 
 Todas as versões citadas anteriormente possuem implementação tanto com persistência, gerando a imagem, quanto sem. A sigla 'NP' no nome dos arquivos significa não persistente.
 
@@ -14,7 +14,10 @@ Em uma máquina linux com compilador da Intel instalado execute o Makefile espec
 *$make -f MakeFileEscolhido*
 - Makefile-P irá compilar e executar as verões persistentes mostrando seu tempo de execução. **Atenção** para o fato de que **serão geradas 3 imagens de aproximadamente 800MB cada**, elas devem ser iguais em conteúdo, mas seus nomes são dados de acordo com o algoritmo utilizado.
 - Makefile-NP irá compilar e executar as versões não persistentes mostrando seu tempo de execução.
-- Makefile-threads irá compilar e executar 11 modos do algoritmo paralelo usando threads, começando por 2 até 4096 threads. Tempo de execução também será computado.
+- Makefile-threads irá compilar e executar 11 modos do algoritmo paralelo usando threads, começando por 2 até 4096 threads. Tempo de execução também será computado.  
+
+Há também um script que pode ser executado localizado na placa *mic0*
+- threads-script - arquivo encontrado somente na pasta *danilo*, é a versão Makefile-threads para MIC.
 
 # Resultados
 Utilizando o compilador da Intel em um notebook ASUS com Intel i7 4700hq [(especificações)](http://ark.intel.com/products/75116/Intel-Core-i7-4700HQ-Processor-6M-Cache-up-to-3_40-GHz), 8GB DDR3L 1600 MHz SDRAM e SSD 500GB foram obtidos os resultados apresentados no gráfico
