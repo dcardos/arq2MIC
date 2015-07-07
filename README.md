@@ -23,6 +23,14 @@ Utilizando o compilador da Intel em um notebook ASUS com Intel i7 4700hq [(espec
 
 ![Notebook Asus N550J com SSD threads](https://github.com/dcardos/arq2MIC/blob/master/Graficos/threads.jpg)
 
+A execução do mesmo algoritmo utilizando o Xeon Phi compilação nativa na placa resultou nos dados apresentados no gráfico abaixo
+
+![MIC threads](https://github.com/dcardos/arq2MIC/blob/master/Graficos/threads-MIC.jpg)
+
+Utilizando persistência com 1024 threads, o tempo de execução na placa passa a ser **2m36s**.
+
+Todos os tempos apresentados são a média de 3 execuções.
+
 # Conclusão
 A versão funcional -Inner Loop Function- teve um leve ganho de desempenho provavelmente por uma possibilidade de vetorização ou melhor utilização da memória cache. Todavia criar uma função de persistência aumentou o número de acesso vetorial não aproveitando o loop original, além de aumentar significamente o tempo de persistência dos dados.
 
