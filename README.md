@@ -37,7 +37,7 @@ Todos os tempos apresentados são a média de 3 execuções.
 # Conclusão
 A versão funcional -Inner Loop Function- teve um leve ganho de desempenho provavelmente por uma possibilidade de vetorização ou melhor utilização da memória cache. Todavia criar uma função de persistência aumentou o número de acesso vetorial não aproveitando o loop original, além de aumentar significamente o tempo de persistência dos dados.
 
-A versão paralela usando POSIX threads é sem dúvidas a melhor, mesmo com a lenta função de persistência seu ganho chega a ser de 30%, sem persistência obteve-se um algoritmo quase 85% mais rápido que o original utilizando 512 threads.
+A versão paralela usando POSIX threads é sem dúvidas a melhor, mesmo com a lenta função de persistência seu ganho chega a ser de 30%, sem persistência obteve-se um algoritmo quase 85% mais rápido que o original utilizando 512 threads. Essa versão paralela sem persistência ainda pode ser 50% mais eficiente se executada nativamente na placa MIC da Intel Xeon Phi com 1024 threads, uma performace incrível apesar de não ser eficiente na persistência dos dados. A persistência é lenta devido a utilização de apenas um core, ou seja, não é paralelizável.
 
 
 # Referências
