@@ -1,0 +1,13 @@
+C=icc
+CFLAGS=-pthread
+NTHREADS=256
+.PHONY: run
+run: prog
+	$(info Executando versões com offload)
+	time -p ./mandelbrotInnerLoopFunctionNPwOffload.out
+	time -p ./mandelbrotInnerLoopFunctionPwOffload.out
+
+prog:
+	$(info Compilando versões com offload)
+	$(CC) mandelbrotInnerLoopFunctionNPwOffload.c -o mandelbrotInnerLoopFunctionNPwOffload.out
+	$(CC) mandelbrotInnerLoopFunctionPwOffload.c -o mandelbrotInnerLoopFunctionPwOffload.out
