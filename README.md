@@ -49,6 +49,8 @@ Por fim a versão com offload não apresentou bons resultados, muito provavelmen
 # Sobre as versões com OpenMP
 Infelizmente todas elas de alguma forma deformavam a imagem, o compilador em si não conseguiu fazer com que o loop, mesmo em sua forma funcional, se comportasse adequadamente, em geral um problema no valor da variável *Cy* foi notado. Dado tal inconsistência, todos os arquivos que usavam OpenMP foram descartados, mas se encontram no histórico de commits.
 
+PS: relatórios do compilador intel no Wiki
+
 
 # Referências
 https://software.intel.com/en-us/articles/programming-and-compiling-for-intel-many-integrated-core-architecture
