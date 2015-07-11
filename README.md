@@ -14,7 +14,7 @@ Em uma máquina linux com compilador da Intel instalado execute o Makefile espec
 *$make -f MakeFileEscolhido*
 - Makefile-P irá compilar e executar as verões persistentes mostrando seu tempo de execução. **Atenção** para o fato de que **serão geradas 3 imagens de aproximadamente 800MB cada**, elas devem ser iguais em conteúdo, mas seus nomes são dados de acordo com o algoritmo utilizado.
 - Makefile-NP irá compilar e executar as versões não persistentes mostrando seu tempo de execução.
-- Makefile-threads irá compilar e executar 11 modos do algoritmo paralelo usando threads, começando por 2 até 4096 threads. Tempo de execução também será computado.
+- Makefile-threads irá compilar e executar 10 modos do algoritmo paralelo usando threads, começando por 4 até 4096 threads. Tempo de execução também será computado.
 - Makefile-offload irá compilar e executar duas versões do offload, uma com persistência e outra sem, mas este só deve ser executado na máquina do Xeon Phi (porém não nativamente).
 
 Há também um script que pode ser executado localizado na placa *mic0*
@@ -25,7 +25,7 @@ Utilizando o compilador da Intel em um notebook ASUS com Intel i7 4700hq [(espec
 
 ![Notebook Asus N550J com SSD](https://github.com/dcardos/arq2MIC/blob/master/Graficos/PvsNP2.jpg)
 
-Or próximos dois gráficos apresentam uma análise do algoritmo paralelo usando POSIX threads **sem persistência**
+Os próximos dois gráficos apresentam uma análise do algoritmo paralelo usando POSIX threads **sem persistência**
 
 ![Notebook Asus N550J com SSD threads](https://github.com/dcardos/arq2MIC/blob/master/Graficos/threads2.jpg)
 
