@@ -1,4 +1,58 @@
-# arq2MIC
+# Computer Architecture Final Assignment - English Version
+Final assignment of computer architecture class: optimizing Mandelbrot algorithm using different approaches. 
+
+# Implemented versions
+- mandelbrot.c - original algorithm.  
+- mandelbrotInnerLoopFuncrion.c - loops modified into functions – this later will allow threads approach.  
+- mandelbrotILFwPthread.c - version using POSIX Threads.  
+- mandelbrotInnerLoopFunctionwOffload.c - version that sends offload to be processed in a Many Integrated Core (MIC) architecture.
+
+When in the name of a “c” file you see the acronym “NP” – Non Persistent- it means that this version of the algorithm does not save the generated image into the hard disk, just in memory (RAM).
+
+# How to run the algorithms
+After cloning this repository in a Linux machine with Intel compiler installed, you will have to execute the desired Makefile using the command:  
+*$make -f ChosenMakeFile*
+- Makefile-P will run the persistent version of the aforementioned algorithms, at the end it will show the time taken to run those algorithms. **Note that it will be created 3 images of approximately 800MB and saved on the hard disk**.
+- Makefile-NP will run the non-persistent version of the aforementioned algorithms, showing the time taken to run them.
+- Makefile-threads threads will run the parallel algorithms using 11 variation if the threads number from 4 to 4096. It will also display the time taken to run each variation.
+- Makefile-offload will run two different versions of the MIC algorithm: one persistent and the other non-persistent. This has to be executed in a machine with a Xeon-Phi architecture.
+
+# Results
+The next two graphics show how the Mandelbrot algorithm versions performed in a Asus laptop using Intel i7 4700hq [(specs)](http://ark.intel.com/products/75116/Intel-Core-i7-4700HQ-Processor-6M-Cache-up-to-3_40-GHz), 8GB DDR3L 1600 MHz SDRAM and SSD 500GB.
+
+![Notebook Asus N550J com SSD](https://github.com/dcardos/arq2MIC/blob/master/Graficos/PvsNP2English.jpg)
+
+The next graphic shows how the non-persistent thread version performed **non-persistent**
+
+![Notebook Asus N550J com SSD threads](https://github.com/dcardos/arq2MIC/blob/master/Graficos/threads2English.jpg)
+
+Now you can see on the next graphic how the same algorithm performed using the MIC architecture.
+
+![MIC threads](https://github.com/dcardos/arq2MIC/blob/master/Graficos/threads-MICEnglish.jpg)
+
+All the time presented is actually the average value of 3 executions.
+
+# Conclusion
+The version using functions – Inner Loop Function (ILF) – had little performance gain when it was non-persistent, probably due to vectorization or cache manipulation by the compiler. The persistent version, on the other hand, had increased the number of vector access not taking advantage of the original loop, which made the algorithm much slower in the persistent version.
+
+The parallel algorithm version using POSIX threads it is by far the best regarding performance. Even the slow persistent version had a 30% gain in performance! The non-persistent version was 85% faster (512 threads) than the original, and can yet be 50% faster using the MIC architecture and 1024 threads.
+
+# References
+https://software.intel.com/en-us/articles/programming-and-compiling-for-intel-many-integrated-core-architecture
+
+https://software.intel.com/sites/default/files/managed/26/d6/Intel_Xeon_Phi_Quick_Start_Developers_Guide-MPSS-3.4.pdf
+
+https://software.intel.com/en-us/node/522683
+
+https://software.intel.com/sites/products/documentation/doclib/iss/2013/compiler/cpp-lin/GUID-44F5B8E2-8EFD-4C51-ACF8-357900798834.htm
+
+http://www.training.prace-ri.eu/uploads/tx_pracetmo/xeonPhiProg.pdf
+
+https://computing.llnl.gov/tutorials/pthreads/
+
+
+
+# arq2MIC - Portuguese version
 Trabalho final da matéria arquitetura de computadores 2 utilizando o algoritmo de Mandelbrot implementado de diferentes maneiras.
 
 # Implementações utilizadas
